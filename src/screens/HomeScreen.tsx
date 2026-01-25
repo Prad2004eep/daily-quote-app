@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Share, Animated, Easing, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Speech from 'expo-speech';
 import { addFavorite, removeFavorite, isFavorite, Quote as QuoteType } from '../storage/favoritesStorage';
 
 const { height, width } = Dimensions.get('window');
@@ -87,6 +88,7 @@ const HomeScreen = () => {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const slideAnimation = useState(new Animated.Value(height))[0];
 
   const getLocalQuote = (): Quote => {
@@ -164,6 +166,41 @@ const HomeScreen = () => {
     }
   };
 
+  const handleSpeak = async () => {
+    if (!quote) return;
+    
+    try {
+      if (isSpeaking) {
+        // Stop speaking
+        Speech.stop();
+        setIsSpeaking(false);
+      } else {
+        // Start speaking
+        const textToSpeak = `${quote.content}. By ${quote.author}`;
+        setIsSpeaking(true);
+        
+        Speech.speak(textToSpeak, {
+          language: 'en',
+          pitch: 1.0,
+          rate: 0.8,
+          onStart: () => {
+            setIsSpeaking(true);
+          },
+          onDone: () => {
+            setIsSpeaking(false);
+          },
+          onError: (error) => {
+            console.error('Speech error:', error);
+            setIsSpeaking(false);
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Error speaking quote:', error);
+      setIsSpeaking(false);
+    }
+  };
+
   const slideAnimatedStyle = {
     transform: [{ translateY: slideAnimation }],
   };
@@ -192,6 +229,17 @@ const HomeScreen = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
+      <TouchableOpacity
+        style={[styles.speakButtonTop, isSpeaking && styles.speakingButtonTop]}
+        onPress={handleSpeak}
+      >
+        <Ionicons
+          name={isSpeaking ? "volume-high" : "volume-medium"}
+          size={24}
+          color="#FFFFFF"
+        />
+      </TouchableOpacity>
+      
       <View style={styles.cardContainer}>
         <Animated.View style={[styles.card, slideAnimatedStyle]}>
           <View style={styles.quoteContainer}>
@@ -316,6 +364,29 @@ const styles = StyleSheet.create({
   shareButton: {
     backgroundColor: '#FFFFFF',
     borderColor: 'rgba(255, 255, 255, 0.5)',
+  },
+  speakButtonTop: {
+    position: 'absolute',
+    top: 50,
+    right: 24,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#9333EA',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#9333EA',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  speakingButtonTop: {
+    backgroundColor: '#10B981',
+    borderColor: '#10B981',
+    shadowColor: '#10B981',
   },
   newQuoteButton: {
     flexDirection: 'row',
