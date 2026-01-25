@@ -191,9 +191,6 @@ daily-quote-app/
 - Check console logs for API errors
 - Verify network connectivity for quote fetching
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
 
 ## 🤝 Contributing
 
