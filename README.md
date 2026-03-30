@@ -4,12 +4,12 @@ A beautiful, modern mobile application built with React Native and Expo that del
 
 ## 📱 Features
 
-- **Daily Quotes**: Get new inspirational quotes every day
-- **Favorites System**: Save and manage your favorite quotes
-- **Smooth Animations**: Beautiful transitions and micro-interactions
-- **Share Functionality**: Share quotes with friends and family
-- **Modern UI**: Gradient backgrounds with glassmorphism effects
-- **Responsive Design**: Optimized for both iOS and Android devices
+- **Daily Quotes**: Get new inspirational quotes every day.
+- **Favorites System**: Save and manage your favorite quotes.
+- **Smooth Animations**: Beautiful transitions and micro-interactions.
+- **Share Functionality**: Share quotes with friends and family.
+- **Modern UI**: Gradient backgrounds with glassmorphism effects.
+- **Responsive Design**: Optimized for both iOS and Android devices.
 
 ## 🚀 Setup Instructions
 
@@ -17,7 +17,7 @@ A beautiful, modern mobile application built with React Native and Expo that del
 
 - Node.js (version 16 or higher)
 - npm or yarn package manager
-- Expo Go app on your mobile device (for testing)
+- Expo Go app on your mobile device (for testing) or any other emulator.
 
 ### Installation
 
